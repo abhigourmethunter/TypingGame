@@ -3,10 +3,11 @@
 
 class Word {
     public:
-        Word(const std::string& t, int xpos, int ypos);
-        void draw() const;
+        Word(const std::string& t, float xpos, float ypos);
+        void draw(int matchedChars, int textSize) const;
 
         std::string text;
-        int x;
-        int y;
+        float x;
+        float y;
+        bool isPotentialMatched = false;
 };

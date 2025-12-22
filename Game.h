@@ -10,11 +10,17 @@ public:
 
 private:
     void resetTimer();
-    void keyPressed();
 
     std::vector<Word> activeWords;
     int timer;
-    int level;
+    std::string typedString;
+    int currentMatches;
     const int SCREEN_WIDTH;
     const int SCREEN_HEIGHT;
+
+    float cursorBlinkTimer = 0.0f;
+    
+    const int TEXT_SIZE = 50;
+    const int TYPING_TEXT_SIZE = 35;
+    const int WORD_FALLING_SPEED = 2.75;
 };
