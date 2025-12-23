@@ -10,6 +10,22 @@ public:
 
 private:
     void resetTimer();
+    void drawHome();
+    void drawPlay();
+    void drawPause();
+    void drawGameOver();
+    
+    void updateHome();
+    void updatePlay();
+    void updatePause();
+    void updateGameOver();
+
+    enum class GameState {
+        HOME,
+        PLAY,
+        PAUSE,
+        GAMEOVER
+    } currentState = GameState::HOME;
 
     std::vector<Word> activeWords;
     int timer;
