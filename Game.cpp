@@ -127,9 +127,7 @@ void Game::resetGame() {
 void Game::updatePause() {    
     if(IsKeyPressed(KEY_TAB)) {
         currentState = GameState::HOME;
-        activeWords.clear();
-        typedString.clear();
-        resetTimer();
+        resetGame();
     }
     if(IsKeyPressed(KEY_SPACE)) {
         currentState = GameState::PLAY;        
@@ -139,16 +137,12 @@ void Game::updatePause() {
 void Game::updateGameOver() {
     if(IsKeyPressed(KEY_ENTER)) {
         currentState = GameState::PLAY;
-        activeWords.clear();
-        typedString.clear();
-        resetTimer();
+        resetGame();
     }
 
     if(IsKeyPressed(KEY_TAB)) {
         currentState = GameState::HOME;
-        activeWords.clear();
-        typedString.clear();
-        resetTimer();
+        resetGame();
     }
 }
 
