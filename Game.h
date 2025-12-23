@@ -20,6 +20,8 @@ private:
     void updatePause();
     void updateGameOver();
 
+    void resetGame();
+
     enum class GameState {
         HOME,
         PLAY,
@@ -33,6 +35,9 @@ private:
     int currentMatches;
     const int SCREEN_WIDTH;
     const int SCREEN_HEIGHT;
+    int score = 0;
+    int frameCounter = 0;
+    int wordRate = 90;
 
     float cursorBlinkTimer = 0.0f;
     

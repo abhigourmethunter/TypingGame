@@ -5,7 +5,7 @@
 #include <cmath>
 
 Game::Game(const int screen_width, const int screen_height) : timer(0), SCREEN_WIDTH(screen_width), SCREEN_HEIGHT(screen_height) {
-    resetTimer();
+    resetGame();
 }
 
 void Game::update() {
@@ -98,11 +98,30 @@ void Game::updatePlay() {
     if(currentMatches == 0) {
         typedString.clear();
     }
-
-    timer--;
         
     cursorBlinkTimer += GetFrameTime();
 
+    if(frameCounter % GetFPS() == 0){
+        score++;
+        if(score % 8 == 0){
+            wordRate--;  
+            if(wordRate < 20) {
+                wordRate = 20;
+            }
+        }
+    }
+
+    timer--;
+    frameCounter++;
+}
+
+void Game::resetGame() {
+    score = 0;
+    frameCounter = 0;
+    wordRate = 90;
+    activeWords.clear();
+    typedString.clear();
+    resetTimer();
 }
 
 void Game::updatePause() {    
@@ -163,6 +182,8 @@ void Game::drawHome() {
 }
 
 void Game::drawPlay() {
+    DrawText(std::to_string(score).c_str(), 5, 5, TEXT_SIZE + 30, {240, 20, 255, 100});
+
     int typedTextWidth = MeasureText(typedString.c_str(), TEXT_SIZE);
 
     DrawRectangle(0, SCREEN_HEIGHT - TEXT_SIZE - 15, SCREEN_WIDTH, TEXT_SIZE + 15, GRAY);
@@ -193,5 +214,5 @@ void Game::drawGameOver() {
 }
 
 void Game::resetTimer() {
-    timer = 80; //add level tuned timer later
+    timer = wordRate;
 }
