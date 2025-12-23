@@ -8,7 +8,7 @@ Word::Word(const std::string& t, float xpos, float ypos) : text(t), x(xpos), y(y
 void Word::draw(int matchedChars, int textSize) const{
     if(isPotentialMatched) {
         DrawText(text.substr(0, matchedChars).c_str(), x, y, textSize, SKYBLUE);
-        DrawText(text.substr(matchedChars).c_str(), x + MeasureText(text.substr(0, matchedChars).c_str(), textSize), y, textSize, WHITE);
+        DrawText(text.substr(matchedChars).c_str(), x + MeasureText(text.substr(0, matchedChars).c_str(), textSize) + 3, y, textSize, WHITE);
     }
     else{
         DrawText(text.c_str(), x, y, textSize, WHITE);

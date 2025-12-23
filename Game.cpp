@@ -13,7 +13,7 @@ void Game::update() {
     if (!timer) {
         resetTimer();
         std::string newWord = WordBank::getRandomWord();
-        activeWords.push_back(Word{newWord, rand() % (SCREEN_WIDTH - MeasureText(newWord.c_str(), TEXT_SIZE)), 0});
+        activeWords.push_back(Word{newWord, (float)(rand() % (SCREEN_WIDTH - MeasureText(newWord.c_str(), TEXT_SIZE))), 0.0f});
     }
 
     currentMatches = 0;
