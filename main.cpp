@@ -25,6 +25,8 @@ int main () {
 
     }
 
+    game.~Game();
+
     CloseWindow();
 
 }

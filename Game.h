@@ -1,14 +1,22 @@
 #pragma once
-#include <vector>
+#include "Animation.h"
 #include "Word.h"
+#include <vector>
 
 class Game {
 public:
     Game(const int screen_width, const int screen_height);
+    ~Game();
     void update();
     void draw();
 
 private:
+
+    const int TEXT_SIZE = 50;
+    const int TYPING_TEXT_SIZE = 35;
+    const int WORD_FALLING_SPEED = 2.75;
+    static constexpr int MAX_LIVES = 5;
+
     void resetTimer();
     void drawHome();
     void drawPlay();
@@ -36,12 +44,14 @@ private:
     const int SCREEN_WIDTH;
     const int SCREEN_HEIGHT;
     int score = 0;
+    int seconds = 0;
     int frameCounter = 0;
     int wordRate = 90;
+    int lives = MAX_LIVES;
 
     float cursorBlinkTimer = 0.0f;
-    
-    const int TEXT_SIZE = 50;
-    const int TYPING_TEXT_SIZE = 35;
-    const int WORD_FALLING_SPEED = 2.75;
+
+    Texture2D heartTexture;
+    Animation heartAnims[MAX_LIVES];
+
 };

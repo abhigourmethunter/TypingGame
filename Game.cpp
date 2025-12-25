@@ -5,7 +5,17 @@
 #include <cmath>
 
 Game::Game(const int screen_width, const int screen_height) : timer(0), SCREEN_WIDTH(screen_width), SCREEN_HEIGHT(screen_height) {
+    heartTexture = LoadTexture("assets/art/Hearts/heart_animated_1.png");
+
+    for(int i = 0; i < MAX_LIVES; i++) {
+        heartAnims[i] = Animation(0, 4, 1, 0.1f, Animation::AnimationType::Once);
+    }
+
     resetGame();
+}
+
+Game::~Game() {
+    UnloadTexture(heartTexture);
 }
 
 void Game::update() {
@@ -74,6 +84,7 @@ void Game::updatePlay() {
             currentMatches++;
             if (it->text == typedString) {
                 it = activeWords.erase(it);
+                score++;
                 currentMatches--;
                 continue;
             }
@@ -89,6 +100,11 @@ void Game::updatePlay() {
                 currentMatches--;
             }
             it = activeWords.erase(it);
+
+            lives--;
+            if(lives <= 0) {
+                currentState = GameState::GAMEOVER;
+            }
         }
         else {
             ++it;
@@ -102,8 +118,8 @@ void Game::updatePlay() {
     cursorBlinkTimer += GetFrameTime();
 
     if(frameCounter % GetFPS() == 0){
-        score++;
-        if(score % 8 == 0){
+        seconds++;
+        if(seconds % 8 == 0){
             wordRate--;  
             if(wordRate < 20) {
                 wordRate = 20;
@@ -113,14 +129,25 @@ void Game::updatePlay() {
 
     timer--;
     frameCounter++;
+
+    for(int i = 0; i < MAX_LIVES; i++) {
+        if (i >= lives) {
+            heartAnims[i].update();
+        }
+    }
 }
 
 void Game::resetGame() {
+    lives = MAX_LIVES;
     score = 0;
+    seconds = 0;
     frameCounter = 0;
     wordRate = 90;
     activeWords.clear();
     typedString.clear();
+    for(int i = 0; i < MAX_LIVES; i++) {
+        heartAnims[i].cur = heartAnims[i].first;
+    }
     resetTimer();
 }
 
@@ -176,8 +203,7 @@ void Game::drawHome() {
 }
 
 void Game::drawPlay() {
-    DrawText(std::to_string(score).c_str(), 5, 5, TEXT_SIZE + 30, {240, 20, 255, 100});
-
+    
     int typedTextWidth = MeasureText(typedString.c_str(), TEXT_SIZE);
 
     DrawRectangle(0, SCREEN_HEIGHT - TEXT_SIZE - 15, SCREEN_WIDTH, TEXT_SIZE + 15, GRAY);
@@ -188,6 +214,26 @@ void Game::drawPlay() {
 
     for (const Word& word : activeWords) {
         word.draw(typedString.length(), TEXT_SIZE);
+    }
+
+    const int BAR_HEIGHT = 40;
+    DrawRectangle(0, 0, SCREEN_WIDTH, BAR_HEIGHT, BLUE);
+    
+    std::string scoreText = "Score: " + std::to_string(score);
+    DrawText(scoreText.c_str(), 15, (BAR_HEIGHT - TEXT_SIZE + 10) / 2, TEXT_SIZE - 10, WHITE);
+    
+    /*std::string livesText = "Lives: " + std::to_string(lives);
+    int livesTextWidth = MeasureText(livesText.c_str(), TEXT_SIZE);
+    DrawText(livesText.c_str(), SCREEN_WIDTH - livesTextWidth - 15, (BAR_HEIGHT - TEXT_SIZE + 10) / 2, TEXT_SIZE - 10, WHITE);*/
+    
+    const int HEART_SIZE = 30;
+    const int HEART_SPACING = 5;
+    for(int i = 0; i < MAX_LIVES; i++) {
+        float heartX = SCREEN_WIDTH - (MAX_LIVES - i) * (HEART_SIZE + HEART_SPACING) - 10;
+        float heartY = (BAR_HEIGHT - HEART_SIZE) / 2;
+        DrawTexturePro(heartTexture, heartAnims[i].frame(5), 
+                       {heartX, heartY, HEART_SIZE, HEART_SIZE}, 
+                       {0, 0}, 0.0f, WHITE);
     }
 }
 
@@ -202,6 +248,8 @@ void Game::drawPause() {
 }
 
 void Game::drawGameOver() {
+    DrawText("Your Score: ", (SCREEN_WIDTH - MeasureText("Your Score: ", TEXT_SIZE)) / 2, SCREEN_HEIGHT / 2 - (TEXT_SIZE*2), TEXT_SIZE, SKYBLUE);
+    DrawText(std::to_string(score).c_str(), (SCREEN_WIDTH - MeasureText(std::to_string(score).c_str(), TEXT_SIZE)) / 2, SCREEN_HEIGHT / 2 - (TEXT_SIZE*2), TEXT_SIZE, SKYBLUE); 
     DrawText("GAME OVER", (SCREEN_WIDTH - MeasureText("GAME OVER", TEXT_SIZE)) / 2, SCREEN_HEIGHT / 2 - TEXT_SIZE, TEXT_SIZE, LIGHTGRAY);
     DrawText("Press ENTER to Restart", (SCREEN_WIDTH - MeasureText("Press ENTER to Restart", TEXT_SIZE)) / 2, SCREEN_HEIGHT / 2 + TEXT_SIZE, TEXT_SIZE, LIGHTGRAY);
     DrawText("Press TAB for Home Menu", (SCREEN_WIDTH - MeasureText("Press TAB for Home Menu", TEXT_SIZE)) / 2, SCREEN_HEIGHT / 2 + (TEXT_SIZE * 3), TEXT_SIZE, LIGHTGRAY);
