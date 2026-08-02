@@ -656,8 +656,8 @@ void Game::drawPause() {
              INSTRUCTION_SIZE, 
              LIGHTGRAY);
     
-    DrawText("Press  [TAB]  for Home Menu", 
-             (SCREEN_WIDTH - MeasureText("Press [TAB] for Home Menu", INSTRUCTION_SIZE)) / 2, 
+    DrawText("Press  [TAB]  for Main Menu", 
+             (SCREEN_WIDTH - MeasureText("Press [TAB] for Main Menu", INSTRUCTION_SIZE)) / 2, 
              SCREEN_HEIGHT / 2 + (INSTRUCTION_SIZE * 3.5), 
              INSTRUCTION_SIZE, 
              LIGHTGRAY);
@@ -710,8 +710,8 @@ void Game::drawGameOver() {
              INSTRUCTION_SIZE, 
              LIGHTGRAY);
     
-    DrawText("Press  [TAB]  for Home Menu", 
-             (SCREEN_WIDTH - MeasureText("Press  [TAB]  for Home Menu", INSTRUCTION_SIZE)) / 2, 
+    DrawText("Press  [TAB]  for Main Menu", 
+             (SCREEN_WIDTH - MeasureText("Press  [TAB]  for Main Menu", INSTRUCTION_SIZE)) / 2, 
              SCREEN_HEIGHT / 2 + (INSTRUCTION_SIZE * 5), 
              INSTRUCTION_SIZE, 
              LIGHTGRAY);
